@@ -1,0 +1,19 @@
+# Ambiente Virtual (Pastas grandes que o Python recria sozinho)
+.venv/
+venv/
+env/
+
+# Segredos e Credenciais (NUNCA envie isso para o GitHub)
+.env
+credenciais.json
+
+# Configurações do VS Code
+.vscode/
+
+# Arquivos temporários do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook (Arquivos temporários de checkpoints)
+.ipynb_checkpoints/
