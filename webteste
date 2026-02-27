@@ -1,0 +1,27 @@
+import pandas as pd
+
+print("Trabalhando no arquivo...")
+
+# Carrega o arquivo principal
+df = pd.read_csv('Precos_Vera_Cruz_Final_3P.csv', sep=';')
+
+# Define o que é sucesso e o que é falha
+sucesso = df['Status_Preco'].isin(['Disponível', 'Esgotado'])
+falha = ~sucesso
+
+# Separa em dois DataFrames
+df_sucesso = df[sucesso]
+df_falha = df[falha].copy() # Cópia para resetar o status
+
+# Reseta o status dos que falharam para "Pendente" para o seu robô ler de novo
+df_falha['Preco_De_Tabela'] = "Pendente"
+df_falha['Preco_Pix'] = "Pendente"
+df_falha['Preco_Cartao'] = "Pendente"
+df_falha['Status_Preco'] = "Pendente"
+
+# Salva os arquivos
+df_sucesso.to_csv('Vera_Cruz_Sucesso.csv', index=False, sep=';', encoding='utf-8-sig')
+df_falha.to_csv('Vera_Cruz_Refazer.csv', index=False, sep=';', encoding='utf-8-sig')
+
+print(f"✅ Feito! {len(df_sucesso)} salvos com sucesso.")
+print(f"⚠️ {len(df_falha)} separados para refazer no arquivo 'Vera_Cruz_Refazer.csv'.")
