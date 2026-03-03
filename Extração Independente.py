@@ -1,7 +1,7 @@
 import pandas as pd
 
 # 1. Carregar a base de dados consolidada
-file_path = "dados_organizados_FerMazzia Corrigido CSV.csv"
+file_path = "dados_organizados_FerMazzia.csv"
 df = pd.read_csv(file_path, sep=None, engine='python')
 
 # 2. Limpar a coluna 'quantidade' para garantir que sejam números reais

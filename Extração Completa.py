@@ -46,7 +46,7 @@ try:
         # Mostra uma amostra misturada para confirmar a consolidação
         print("\nAmostra dos dados consolidados:")
         # Pega o DataFrame que já tem 100% dos dados na memória e salva em um arquivo local
-        df_historico_completo.to_csv("meus_dados_completos.csv", index=False, sep=";")
+        df_historico_completo.to_csv("dados_histórico_completo.csv", index=False, sep=";")
 
         print("Arquivo salvo! Pode abrir a pasta do projeto.")
 
