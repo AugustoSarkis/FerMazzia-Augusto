@@ -8,7 +8,7 @@ def unificar_bases_saojoao_rigoroso():
     # 1. Carrega os ficheiros
     df_historico = pd.read_csv('Dados_SaoJoao/Historico_Vendas_Sao_Joao_Consolidado.csv', sep=';')
     # Ajusta o nome do ficheiro gerado pelo script da API se necessário:
-    df_scraping = pd.read_csv('Dados_SaoJoao/Scraping_SaoJoao_Definitivo.csv', sep=';') 
+    df_scraping = pd.read_csv('Dados_SaoJoao/Scraping_saojoao.csv', sep=';') 
     
     df_scraping = df_scraping.drop_duplicates(subset=['Nome do produto'], keep='first')
     
