@@ -3,9 +3,8 @@ from thefuzz import process, fuzz
 import time
 
 def unificar_bases_veracruz_rigoroso():
-    print("⏳ A carregar as folhas de cálculo da Vera Cruz...")
+    print("⏳ Carregando as planilhas da Vera Cruz...")
     
-    # 1. Carrega os ficheiros
     df_historico = pd.read_csv('Dados_VeraCruz/Historico_Vendas_Vera_Cruz_Consolidado.csv', sep=';')
     df_scraping = pd.read_csv('Dados_VeraCruz/Scraping_VeraCruz.csv', sep=';')
     
@@ -16,7 +15,7 @@ def unificar_bases_veracruz_rigoroso():
     
     dicionario_match = {}
     
-    print(f"🔎 A iniciar Fuzzy Matching rigoroso para {len(produtos_historico)} produtos...")
+    print(f"🔎 Iniciando Fuzzy Matching rigoroso para {len(produtos_historico)} produtos...")
     inicio = time.time()
     
     for produto in produtos_historico:
@@ -34,15 +33,9 @@ def unificar_bases_veracruz_rigoroso():
     print(f"✅ Matching finalizado em {tempo_gasto:.1f} segundos!")
     
     df_historico['nome_scraping'] = df_historico['Produto'].map(dicionario_match)
-    sucessos = df_historico['nome_scraping'].notna().sum()
-    print(f"🎯 Taxa de Sucesso Genuíno: {sucessos} produtos casaram perfeitamente.")
-    
-    # Cruzamento (Left Join)
     df_final = pd.merge(df_historico, df_scraping, left_on='nome_scraping', right_on='Nome do produto', how='left')
     
-    # ==========================================
-    # PADRONIZAÇÃO E LIMPEZA
-    # ==========================================
+    # Tratamento de Nulos
     df_final['Nome da Farmácia'] = df_final['Nome da Farmácia'].fillna('VeraCruz')
     df_final['Status do produto'] = df_final['Status do produto'].fillna('Esgotado')
     df_final['EAN'] = df_final['EAN'].fillna(0)
@@ -50,7 +43,20 @@ def unificar_bases_veracruz_rigoroso():
     cols_precos = ['Preço original', 'Preço à vista no cartão', 'Desconto cartão', 'Preço PIX', 'Desconto PIX']
     for col in cols_precos:
         if col in df_final.columns:
-            df_final[col] = df_final[col].fillna(0)
+            df_final[col] = df_final[col].replace('-', 0).fillna(0)
+
+    def isolar_categoria_primaria(cat):
+        if not isinstance(cat, str) or cat in ['-', '']:
+            return 'Sem Categoria'
+        partes = [p.strip() for p in cat.split('>')]
+        if 'Medicamentos' in partes:
+            idx = partes.index('Medicamentos')
+            if idx + 1 < len(partes):
+                return partes[idx + 1]
+            return 'Medicamentos'
+        return partes[0]
+        
+    df_final['Subcategoria'] = df_final['Subcategoria'].apply(isolar_categoria_primaria)
 
     mapeamento_colunas = {
         'Nome da Farmácia': 'Farmácia',
@@ -59,6 +65,7 @@ def unificar_bases_veracruz_rigoroso():
         'Frequencia_Vendas': 'Frequencia_Vendas',
         'EAN': 'EAN_ou_SKU',
         'Produto': 'Nome_do_Produto',
+        'Subcategoria': 'Categoria',
         'Preço original': 'Preco_Tabela',
         'Preço à vista no cartão': 'Preco_Cartao_Valor',
         'Desconto cartão': 'Desconto_Cartao',
@@ -70,8 +77,8 @@ def unificar_bases_veracruz_rigoroso():
     
     ordem_colunas = [
         'Farmácia', 'Status', 'Total Unidades Vendidas', 'Frequencia_Vendas', 
-        'EAN_ou_SKU', 'Nome_do_Produto', 'Preco_Tabela', 'Preco_Cartao_Valor', 
-        'Desconto_Cartao', 'Preco_Pix_Valor', 'Desconto_Pix'
+        'EAN_ou_SKU', 'Nome_do_Produto', 'Categoria', 'Preco_Tabela', 
+        'Preco_Cartao_Valor', 'Desconto_Cartao', 'Preco_Pix_Valor', 'Desconto_Pix'
     ]
     
     df_final = df_final[ordem_colunas]

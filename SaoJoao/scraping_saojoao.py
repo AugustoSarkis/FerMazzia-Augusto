@@ -111,7 +111,7 @@ def extrair_fatia_vtex_is(faixa_preco, escritor, arquivo_csv):
 # MOTOR PRINCIPAL (ORQUESTRAÇÃO)
 # ==========================================
 def executar_spider_saojoao_api():
-    nome_arquivo = 'Scraping_SaoJoao_Definitivo.csv'
+    nome_arquivo = 'Dados_SaoJoao/Scraping_saojoao.csv'
     cabecalhos = [
         'Nome da Farmácia', 'EAN', 'Nome do produto', 'Status do produto', 
         'Preço original', 'Preço PIX', 'Desconto PIX', 'Preço à vista no cartão', 
