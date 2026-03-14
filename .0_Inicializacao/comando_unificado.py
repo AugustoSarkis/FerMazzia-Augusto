@@ -128,7 +128,7 @@ def iniciar_pipeline():
     
     time.sleep(10) # Pequena pausa para garantir que o upload termine na nuvem
     
-    # MANTIVE COMENTADO POR SEGURANÇA DURANTE O PRÓXIMO TESTE:
+    # Para ativar o desligamento automático, descomente a linha abaixo. CUIDADO: Isso desligará a máquina imediatamente após a execução!
     # os.system("sudo shutdown -h now")
 
 if __name__ == "__main__":
