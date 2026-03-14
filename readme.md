@@ -64,3 +64,46 @@ O arquivo central `comando_unificado.py` utiliza a biblioteca `subprocess` para 
 * **Scraping & Requests:** `requests`, `beautifulsoup4`, `lxml`
 * **Processamento de Dados:** `pandas`, `thefuzz`, `python-Levenshtein`
 * **Cloud & Integração:** `boto3` (AWS SDK), Bash Scripting (Crontab/Linux)
+
+## 💻 Como Executar e Testar Localmente
+
+Para rodar este pipeline no seu próprio computador antes de fazer o *deploy* para a AWS, siga os passos abaixo:
+
+### 1. Clonar o Repositório
+```bash
+git clone [https://github.com/seu-usuario/FerMazzia-Pipeline.git](https://github.com/seu-usuario/FerMazzia-Pipeline.git)
+cd FerMazzia-Pipeline
+```
+### 2. Criar e Ativar o Ambiente Virtual
+É fortemente recomendado isolar as dependências do projeto para não gerar conflitos na sua máquina. No terminal, execute:
+```bash
+python3 -m venv env && source env/bin/activate
+```
+* (Nota: Se estiver a utilizar o Windows, o comando de ativação é env\Scripts\activate)
+
+### 3. Instalar as Dependências
+Com o ambiente ativado (env) visível no seu terminal, instale as bibliotecas necessárias:
+```bash
+pip install -r requirements.txt
+```
+### 4. Configurar Credenciais da AWS (Crucial) e do Google BigQuery
+Como o comando unificado utiliza a biblioteca boto3 para enviar os arquivos finais para o Data Lake, você precisa ter as suas credenciais da AWS configuradas localmente e
+Se tiver o AWS CLI instalado, basta executar:
+```bash
+aws configure
+```
+
+Além disso, para que o `comando_unificado.py` consiga acessar a Data Base da FerMazzia, é necessário anexar o caminho local para as `Credenciais.json` e inseri-las nesse trecho do código do `extracao_dados_cliente.py`.
+```python 
+# Aponte para a sua chave JSON da FerMazzia
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "ADICIONE_O_CAMINHO_PARA_SUA_CHAVE_JSON_AQUI.json"
+```
+* Dica de Teste Offline: Se quiser testar apenas o funcionamento do Web Scraping e do Fuzzy Matching sem fazer o upload para a nuvem, abra arquivo `comando_unificado.py` e comente as linhas que chamam a função `upload_para_s3()`.
+
+### 5. Executar o Comando Unificado
+com o ambiente preparado, execute o seguinte comando:
+```bash
+cd .\.1_Scripts
+python3 comando_unificado.py
+```
+O script fará toda a extração, limpeza e cruzamento. Você poderá acompanhar o progresso diretamente no terminal ou através do arquivo de diário de bordo gerado na pasta de logs do bucket.

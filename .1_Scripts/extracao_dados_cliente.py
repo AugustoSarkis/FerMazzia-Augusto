@@ -3,7 +3,7 @@ import pandas as pd
 from google.cloud import bigquery
 
 # Aponte para a sua chave JSON da FerMazzia
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/ubuntu/.gcp/credenciais-fermazzia.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "ADICIONE_O_CAMINHO_PARA_SUA_CHAVE_JSON_AQUI.json"
 
 def extrair_e_unificar_dados():
     client = bigquery.Client()
