@@ -104,7 +104,7 @@ def unificar_bases_farmaponte_rigoroso():
     
     # 8. Limpeza e Salvamento
     nome_arquivo_final = "Base_Cruzada_SaoPaulo.csv"
-    # Salva usando vírgula (sep=',') para bater com o padrão do teu ficheiro novo
+    # Salva usando vírgula (sep=',')
     df_final.to_csv(f"/home/ubuntu/.2_Dados/SaoPaulo/{nome_arquivo_final}", index=False, encoding='utf-8-sig', sep=',')
     
     print(f"🎉 Tabela limpa, formatada e salva como: {nome_arquivo_final}")

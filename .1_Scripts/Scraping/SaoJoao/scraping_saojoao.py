@@ -8,12 +8,10 @@ import random
 from datetime import datetime
 
 # =========================================================
-# CONFIGURAÇÕES DA ARQUITETURA (SÃO JOÃO + API + MULTITHREAD)
+# SÃO JOÃO + API + MULTITHREAD
 # =========================================================
 ARQUIVO_SAIDA = "/home/ubuntu/.2_Dados/SaoJoao/Scraping_SaoJoao.csv"
 
-# O Categoria ID da São João para Medicamentos (Geralmente é a raiz, mas usaremos um parâmetro de busca amplo)
-# NOTA: O site da São João usa uma estrutura de busca muito forte baseada na URL departamental.
 URL_BASE_API = "https://www.saojoaofarmacias.com.br/api/catalog_system/pub/products/search/medicamentos"
 
 # Fatiamento de Segurança para não passar de 2500 produtos
@@ -119,12 +117,11 @@ def processar_json_vtex(produto):
         return None
 
 # ==========================================
-# O ROBÔ MERGULHADOR (WORKER)
+# O WORKER
 # ==========================================
 def raspar_pagina_api(sessao, preco_min, preco_max, pagina, escritor, arquivo_csv, checkpoint_set):
     global fim_da_fatia
     
-    # Se algum outro robô já descobriu que a fatia acabou, este robô desiste e volta pra base
     if fim_da_fatia: return 0
 
     from_idx = (pagina - 1) * 50
@@ -133,7 +130,7 @@ def raspar_pagina_api(sessao, preco_min, preco_max, pagina, escritor, arquivo_cs
     url = f"{URL_BASE_API}?fq=P:[{preco_min} TO {preco_max}]&_from={from_idx}&_to={to_idx}"
     
     try:
-        # Pausa leve para não assustar o WAF (cada thread dorme individualmente)
+        # Pausa leve
         time.sleep(random.uniform(0.5, 1.5))
         
         resposta = sessao.get(url, headers=HEADERS, timeout=15)
@@ -141,7 +138,7 @@ def raspar_pagina_api(sessao, preco_min, preco_max, pagina, escritor, arquivo_cs
         if resposta.status_code in [200, 206]:
             dados = resposta.json()
             
-            # Se a página vier vazia, avisa o Orquestrador que a fatia acabou
+            # Se a página vier vazia, avisa que a fatia acabou
             if not dados or len(dados) == 0:
                 fim_da_fatia = True
                 return 0
@@ -195,14 +192,14 @@ def iniciar_pipeline_saojoao():
         print(f"[+] Retomando! {len(codigos_ja_processados)} medicamentos já constam no banco.")
 
     total_geral_inseridos = 0
-    QTD_ROBOS_SIMULTANEOS = 5 # Seguro contra WAF. Não aumente para mais de 8!
+    QTD_ROBOS_SIMULTANEOS = 5 # Seguro contra WAF.
 
     with open(ARQUIVO_SAIDA, mode=modo_abertura, newline='', encoding='utf-8') as arquivo_csv:
         escritor = csv.DictWriter(arquivo_csv, fieldnames=CABECALHOS_CSV, delimiter=';')
         if modo_abertura == 'w':
             escritor.writeheader()
             
-        # Sessão compartilhada melhora a performance das threads (Keep-Alive)
+        # Keep-Alive
         with requests.Session() as sessao:
             
             for preco_min, preco_max in FAIXAS_DE_PRECO:
@@ -211,13 +208,10 @@ def iniciar_pipeline_saojoao():
                 
                 print(f"\n[+] Extraindo Fatia R$ {preco_min} a R$ {preco_max}...")
                 
-                # Como a VTEX limita a 2500 produtos, o máximo de páginas é 50.
                 todas_as_paginas = list(range(1, 51))
                 produtos_nesta_fatia = 0
                 
-                # Lança os robôs na piscina
                 with concurrent.futures.ThreadPoolExecutor(max_workers=QTD_ROBOS_SIMULTANEOS) as executor:
-                    # Envia a tarefa para cada página. Os robôs pegam conforme ficam livres.
                     futuros = {executor.submit(raspar_pagina_api, sessao, preco_min, preco_max, pag, escritor, arquivo_csv, codigos_ja_processados): pag for pag in todas_as_paginas}
                     
                     for futuro in concurrent.futures.as_completed(futuros):

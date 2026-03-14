@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 
 # ==========================================
-# O "ESPIÃO" DE TERMINAL (LOGGER)
+# O LOGGER
 # ==========================================
 ARQUIVO_LOG_LOCAL = "log_execucao.txt"
 
@@ -34,7 +34,7 @@ sys.stderr = sys.stdout
 NOME_BUCKET = "fermazzia-equipe01" 
 
 # ----------------------------------------------------
-# CAMINHO ABSOLUTO DO PYTHON NO AMBIENTE VIRTUAL (A CORREÇÃO)
+# CAMINHO ABSOLUTO DO PYTHON NO AMBIENTE VIRTUAL
 # ----------------------------------------------------
 PYTHON_BIN = "/home/ubuntu/fermazzia_env/bin/python3"
 
@@ -59,7 +59,6 @@ SCRIPTS_MATCHING = {
 def executar_script(nome_script):
     print(f"\n🚀 Iniciando execução de: {nome_script}")
     try:
-        # AQUI FOO CORRIGIDO: Agora usamos o PYTHON_BIN em vez de apenas "python3"
         resultado = subprocess.run([PYTHON_BIN, nome_script], capture_output=True, text=True, check=True)
         
         # Imprime o que o script secundário falou (o Logger vai gravar isso no txt)

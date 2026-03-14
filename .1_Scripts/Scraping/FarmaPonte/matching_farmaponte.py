@@ -46,7 +46,7 @@ def unificar_bases_farmaponte_rigoroso():
     sucessos = df_historico['nome_scraping'].notna().sum()
     print(f"🎯 Taxa de Sucesso Genuíno: {sucessos} produtos casaram perfeitamente.")
     
-    # 4. O Cruzamento (Left Join)
+    # 4. O Cruzamento
     print("🔗 Fundindo os dados e formatando colunas...")
     df_final = pd.merge(
         df_historico, 
@@ -56,7 +56,7 @@ def unificar_bases_farmaponte_rigoroso():
         how='left'
     )
     
-    # 5. Tratamento de Nulos (Imitando o teu ficheiro ATUALIZADO)
+    # 5. Tratamento de Nulos
     df_final['Nome da Farmácia'] = df_final['Nome da Farmácia'].fillna('FarmaPonte')
     df_final['Status do produto'] = df_final['Status do produto'].fillna('Indisponível')
     df_final['EAN'] = df_final['EAN'].fillna(0)

@@ -8,12 +8,11 @@ from datetime import datetime
 import sys
 
 # =========================================================
-# CONFIGURAÇÕES DO PIPELINE (DATA LAKE - CATÁLOGO COMPLETO)
+# CONFIGURAÇÕES DO PIPELINE
 # =========================================================
 ARQUIVO_SAIDA = "/home/ubuntu/.2_Dados/SaoPaulo/Scraping_SaoPaulo.csv"
 CONCURRENCY_LIMIT = 5 
 
-# Configurações do "Burst and Sleep" para burlar o WAF
 TAMANHO_LOTE = 2500
 TEMPO_PAUSA_MINUTOS = 3 
 
@@ -249,7 +248,7 @@ async def orquestrador_scraping():
                             print("\n[!] ALERTA VERMELHO: Múltiplos bloqueios WAF detectados.")
                             print(f"[!] O Cloudflare bloqueou a máquina. Salvando {produtos_salvos_geral} produtos e abortando.")
                             for t in tasks: t.cancel()
-                            sys.exit(1) # Mata o script com erro para você saber que travou
+                            sys.exit(1) # Mata o script com erro para saber que travou
                         continue 
                     
                     processados_neste_lote += 1
@@ -263,7 +262,7 @@ async def orquestrador_scraping():
                         print(f"    -> Lote {numero_lote}: {processados_neste_lote}/{len(lote_atual_urls)} URLs avaliadas | +{produtos_salvos_geral} produtos salvos")
 
         # =========================================================
-        # PAUSA ESTRATÉGICA (O Balde Furado do Cloudflare)
+        # PAUSA ESTRATÉGICA
         # =========================================================
         if i + TAMANHO_LOTE < total_fila:
             print(f"\n[Zzz] Lote {numero_lote} concluído. Conexão TCP completamente encerrada.")

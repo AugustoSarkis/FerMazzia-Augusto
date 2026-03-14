@@ -37,7 +37,7 @@ def calcular_desconto(original, com_desconto):
     return 0
 
 # ==========================================
-# FASE 0: O OLHEIRO (DESCOBRIR PÁGINAS)
+# FASE 0: DESCOBRIR PÁGINAS
 # ==========================================
 def descobrir_total_paginas():
     print("🔭 FASE 0: Mapeando o tamanho do catálogo da Vera Cruz...")
@@ -66,7 +66,7 @@ def descobrir_total_paginas():
     return 1
 
 # ==========================================
-# FASE 1: O BATEDOR PARALELO (COLETA DE URLs)
+# FASE 1: COLETA DE URLs
 # ==========================================
 def extrair_links_da_pagina(pagina):
     base_url = "https://www.drogariaveracruz.com.br/medicamentos/"
@@ -116,7 +116,7 @@ def coletar_links_medicamentos_paralelo(total_paginas):
     return links_unicos
 
 # ==========================================
-# FASE 2: O MERGULHADOR (EXTRAÇÃO PROFUNDA)
+# FASE 2: EXTRAÇÃO PROFUNDA
 # ==========================================
 def raspar_dados_produto(url, escritor, arquivo_csv):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
@@ -205,7 +205,7 @@ def raspar_dados_produto(url, escritor, arquivo_csv):
         else:
             dados['Status do produto'] = 'Esgotado'
 
-        # ZONA CRÍTICA: Escrita segura
+        # Escrita segura
         with trava_escrita:
             escritor.writerow(dados)
             arquivo_csv.flush()
