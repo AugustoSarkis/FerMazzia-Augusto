@@ -34,8 +34,8 @@ O projeto foi refatorado para uma arquitetura modular, separando scripts execut�
  ┃     ┣ 📜 matching_veracruz.py      # Algoritmo de Fuzzy Matching (TheFuzz)
  ┃     ┗ 📜 scraping_veracruz.py      # Multithreading (BeautifulSoup)
  ┣ 📂 .2_Dados                        # Diretórios temporários de armazenamento
- ┃ ┣ 📂 Cliente
- ┃ ┃ ┗ 📊 Historico_Vendas_Consolidado.csv
+ ┃ ┣ 📂 SaoPaulo
+ ┃ ┃ ┗ 📊 Base_Cruzada_SaoPaulo.csv
  ┃ ┣ 📂 FarmaPonte
  ┃ ┃ ┗ 📊 Base_Cruzada_FarmaPonte.csv
  ┃ ┣ 📂 SaoJoao
