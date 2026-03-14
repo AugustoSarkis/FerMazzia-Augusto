@@ -27,6 +27,9 @@ O projeto foi refatorado para uma arquitetura modular, separando scripts execut�
  ┃   ┣ 📂 SaoJoao
  ┃   ┃ ┣ 📜 matching_saojoao.py       # Algoritmo de Fuzzy Matching (TheFuzz)
  ┃   ┃ ┗ 📜 scraping_saojoao.py       # Extração via API (VTEX Intelligent Search)
+ ┃   ┣ 📂 SaoPaulo
+ ┃   ┃ ┣ 📜 matching_saojoao.py       # Algoritmo de Fuzzy Matching (TheFuzz)
+ ┃   ┃ ┗ 📜 scraping_saojoao.py       # Extração via API (VTEX Intelligent Search)
  ┃   ┗ 📂 VeraCruz
  ┃     ┣ 📜 matching_veracruz.py      # Algoritmo de Fuzzy Matching (TheFuzz)
  ┃     ┗ 📜 scraping_veracruz.py      # Multithreading (BeautifulSoup)
@@ -50,8 +53,6 @@ O projeto foi refatorado para uma arquitetura modular, separando scripts execut�
 
 O arquivo central `comando_unificado.py` utiliza a biblioteca `subprocess` para ditar o ritmo da operação em fases estritas:
 
-* **Fase 1 (Configuração da Função Lambda):** Usando Event Bridge como trigger da função, ela, dia sim dia não, ao meio dia, liga a máquina EC2.
-* **Fase 2 (Função Reebot):** Ao acordar, usando a função `@reboot`, a máquina executa o script `comando_unificado.py` toda vez que é ligada, desencadeando o resto dos processos.
 * **Fase 1 (Coleta Mestra):** Aciona o script `extracao_dados_cliente.py` para gerar a base atualizada de produtos da FerMazzia.
 * **Fase 2 (Web Scraping):** Dispara os robôs de coleta da FarmaPonte, VeraCruz e São João. Os scripts lidam com bloqueios, paginações ocultas e fatiamento de preços (*Price Bucketing*) de forma assíncrona/multithread.
 * **Fase 3 (Fuzzy Matching):** Os scripts de *matching* são acionados. Utilizando o motor `token_sort_ratio` (com nota de corte rigorosa de 70%), o algoritmo compara a base do cliente com o scraping, unifica as strings, trata categorias, preenche valores nulos com zero absoluto e impõe um *schema* estrito.
@@ -109,3 +110,5 @@ cd .\.1_Scripts
 python3 comando_unificado.py
 ```
 O script fará toda a extração, limpeza e cruzamento. Você poderá acompanhar o progresso diretamente no terminal ou através do arquivo de diário de bordo gerado na pasta de logs do bucket.
+
+* (Nota: Os paths para arquivos no código dizem respeito ao ambiente LINUX montado na máquina EC2, para uma execução local, todos os paths devem ser atualizados de acordo).

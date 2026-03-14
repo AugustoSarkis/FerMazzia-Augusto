@@ -46,14 +46,14 @@ SCRIPTS_EXTRACAO_SCRAPING = [
     "/home/ubuntu/.1_Scripts/Scraping/FarmaPonte/scraping_farmaponte.py",
     "/home/ubuntu/.1_Scripts/Scraping/VeraCruz/scraping_veracruz.py",
     "/home/ubuntu/.1_Scripts/Scraping/SaoJoao/scraping_saojoao.py",
-    #"/home/ubuntu/.1_Scripts/Scraping/SaoPaulo/scraping_saopaulo.py"
+    "/home/ubuntu/.1_Scripts/Scraping/SaoPaulo/scraping_saopaulo.py"
 ]
 
 SCRIPTS_MATCHING = {
     "/home/ubuntu/.1_Scripts/Scraping/FarmaPonte/matching_farmaponte.py": "/home/ubuntu/.2_Dados/FarmaPonte/Base_Cruzada_FarmaPonte.csv",
     "/home/ubuntu/.1_Scripts/Scraping/VeraCruz/matching_veracruz.py": "/home/ubuntu/.2_Dados/VeraCruz/Base_Cruzada_VeraCruz.csv",
     "/home/ubuntu/.1_Scripts/Scraping/SaoJoao/matching_saojoao.py": "/home/ubuntu/.2_Dados/SaoJoao/Base_Cruzada_SaoJoao.csv",
-    #"/home/ubuntu/.1_Scripts/Scraping/SaoPaulo/matching_saopaulo.py": "/home/ubuntu/.2_Dados/SaoPaulo/Base_Cruzada_SaoPaulo.csv"
+    "/home/ubuntu/.1_Scripts/Scraping/SaoPaulo/matching_saopaulo.py": "/home/ubuntu/.2_Dados/SaoPaulo/Base_Cruzada_SaoPaulo.csv"
 }
 
 def executar_script(nome_script):
