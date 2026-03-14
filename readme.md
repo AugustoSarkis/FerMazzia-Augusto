@@ -44,6 +44,8 @@ O projeto foi refatorado para uma arquitetura modular, separando scripts execut�
  ┣ 📜 comando_unificado.py            # Orquestrador Master (Gatilho da EC2)
  ┗ 📜 requirements.txt                # Dependências do ambiente Python
 
+```
+
  ## ⚙️ Como o Pipeline Funciona (Fluxo de Execução)
 
 O arquivo central `comando_unificado.py` utiliza a biblioteca `subprocess` para ditar o ritmo da operação em fases estritas:
